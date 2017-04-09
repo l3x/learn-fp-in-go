@@ -4,8 +4,8 @@ type (
 	FilterFunc func(string) bool
 	MapFunc func(string) string
 	Collection []string
-	ReduceFunc func(string, Collection) Collection
-	ReduceFunc2 func(string, CarCollection) CarCollection
+	ReducerFunc func(string, Collection) Collection
+	ReducerFunc2 func(string, CarCollection) CarCollection
 	Car string
 	CarType struct {
 		Make  string `json:"make"`

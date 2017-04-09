@@ -32,11 +32,6 @@ func main() {
 				Filter(ByHasNumber()).
 				Filter(ByMake("Toyota")))
 
-		PrintCars("Domestic, Numeric, GM",
-			cars.Filter(ByDomestic()).
-				Filter(ByHasNumber()).
-				Filter(ByMake("GM")))
-
 		moreCars := LoadMoreCars()
 
 		PrintCars("More Cars, Domestic, Numeric, GM",
@@ -44,12 +39,6 @@ func main() {
 				Filter(ByDomestic()).
 				Filter(ByHasNumber()).
 				Filter(ByMake("GM")))
-
-		PrintCars("More Cars, Domestic, Numeric, Ford",
-			cars.AddCars(moreCars).
-				Filter(ByDomestic()).
-				Filter(ByHasNumber()).
-				Filter(ByMake("Ford")))
 
 		PrintCars("Numeric, Foreign, Map Upgraded",
 			cars.Filter(ByHasNumber()).

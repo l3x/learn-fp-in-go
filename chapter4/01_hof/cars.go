@@ -34,7 +34,7 @@ func (cars Collection) AddCars(carsToAdd Collection) Collection {
 	return append(cars, carsToAdd...)
 }
 
-func (cars Collection) Reduce(fn ReduceFunc, accumulator Collection) Collection {
+func (cars Collection) Reduce(fn ReducerFunc, accumulator Collection) Collection {
 	var result = accumulator
 	for _, car := range cars {
 		result = append(fn(car, result))
@@ -42,7 +42,7 @@ func (cars Collection) Reduce(fn ReduceFunc, accumulator Collection) Collection 
 	return result
 }
 
-func (cars Collection) Reduce2(fn ReduceFunc2, accumulator CarCollection) CarCollection {
+func (cars Collection) Reduce2(fn ReducerFunc2, accumulator CarCollection) CarCollection {
 	var result = accumulator
 	for _, car := range cars {
 		result = append(fn(car, result))
@@ -50,20 +50,20 @@ func (cars Collection) Reduce2(fn ReduceFunc2, accumulator CarCollection) CarCol
 	return result
 }
 
-func JsonReducer(cars Collection) ReduceFunc  {
+func JsonReducer(cars Collection) ReducerFunc  {
 	return func(car string, cars Collection) Collection {
-		JSON := fmt.Sprintf("{\"car\": {\"make\": \"%s\", \"model\": \"%s\"}}", GetMake(car), GetModel(car))
-		cars = append(cars, JSON)
+		carJson := fmt.Sprintf("{\"car\": {\"make\": \"%s\", \"model\": \"%s\"}}", GetMake(car), GetModel(car))
+		cars = append(cars, carJson)
 		return cars
 	}
 }
 
-func CarTypeReducer(cars Collection) ReduceFunc2 {
+func CarTypeReducer(cars Collection) ReducerFunc2 {
 
 	return func(car string, cars CarCollection) CarCollection {
-		JSON := fmt.Sprintf("{\"make\": \"%s\", \"model\": \"%s\"}", GetMake(car), GetModel(car))
+		carJson := fmt.Sprintf("{\"make\": \"%s\", \"model\": \"%s\"}", GetMake(car), GetModel(car))
 		var c CarType
-		err := json.Unmarshal([]byte(JSON), &c)
+		err := json.Unmarshal([]byte(carJson), &c)
 		if err != nil {
 			log.Fatal("ERROR:", err)
 		}
@@ -72,7 +72,7 @@ func CarTypeReducer(cars Collection) ReduceFunc2 {
 	}
 }
 
-func MakeReducer(make string, cars Collection) ReduceFunc  {
+func MakeReducer(make string, cars Collection) ReducerFunc  {
 	return func(car string, cars Collection) Collection {
 		if s.Contains(car, make) {
 			cars = append(cars, car)
@@ -132,6 +132,23 @@ func (cars Collection) Map(fn MapFunc) Collection {
 		mappedCars = append(mappedCars, fn(car))
 	}
 	return mappedCars
+}
+
+func (cars Collection) x() {
+
+	mappedCars := make(Collection, 0, len(cars))
+
+	for _, car := range cars {
+		thisCar := fmt.Sprintf("%s %s", car, map[string]string{
+			"Honda": "LX",
+			"Lexus": "LS",
+			"Toyota": "EV",
+			"Ford": "XL",
+			"GM": "X",
+		}[GetMake(car)])
+		mappedCars = append(mappedCars, thisCar)
+	}
+
 }
 
 func Upgrade() MapFunc {

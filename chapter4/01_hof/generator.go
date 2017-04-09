@@ -49,7 +49,7 @@ func (cars Collection) GenerateCars(start, limit int) Collection {
 }
 
 func printCars(indexedCars chan *IndexedCar, start, limit int) {
-	log.Printf("\nGenerated Cars (%d to %d)\n%s\n", start, start + limit, DASHES)
+	log.Printf("\nGenerated Cars (%d to %d)\n%s\n", start, start + limit - 1, DASHES)
 	var cars Collection
 	for car := range indexedCars {
 		log.Printf("car: %s\n", car.Car)
