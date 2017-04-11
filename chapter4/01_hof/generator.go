@@ -32,7 +32,6 @@ func (cars Collection) GenerateCars(start, limit int) Collection {
 				panic(err)
 			}
 			carChannel <- thisCar
-			generatedCars = append(generatedCars, thisCar.Car)
 			waitGroup.Done()
 		}(carIndex)
 
@@ -41,18 +40,13 @@ func (cars Collection) GenerateCars(start, limit int) Collection {
 
 	go func() {
 		waitGroup.Wait()
+		println("close channel")
 		close(carChannel)
 	}()
 
-	printCars(carChannel, start, limit)
+	for thisCar := range carChannel {
+		generatedCars = append(generatedCars, thisCar.Car)
+	}
 	return generatedCars
 }
 
-func printCars(indexedCars chan *IndexedCar, start, limit int) {
-	log.Printf("\nGenerated Cars (%d to %d)\n%s\n", start, start + limit - 1, DASHES)
-	var cars Collection
-	for car := range indexedCars {
-		log.Printf("car: %s\n", car.Car)
-		cars = append(cars, car.Car)
-	}
-}

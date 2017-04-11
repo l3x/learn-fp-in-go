@@ -41,7 +41,6 @@ func getThisCarJson(carIndex int) ([]byte, error) {
 }
 
 func GetThisCar(carIndex int) (*IndexedCar, error) {
-
 	thisCarJson, err  := getThisCarJson(carIndex)
 	if err != nil {
 		panic(err)
